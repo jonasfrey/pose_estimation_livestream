@@ -16,6 +16,7 @@ function stop() {
   stream?.getTracks().forEach((track) => track.stop());
   stream = null;
   video.srcObject = null;
+  $("stage").style.removeProperty("aspect-ratio");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   $("empty").hidden = false;
   $("view-label").hidden = true;
@@ -51,7 +52,7 @@ async function start() {
   $("start").textContent = "Starting…";
   $("stop").disabled = false;
   try {
-    if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
       throw new Error(
         "Camera access requires localhost or HTTPS in a supported browser",
       );
@@ -82,24 +83,24 @@ async function start() {
     await pendingInference;
     if (session !== generation) return;
     if (!detector) {
-      if (!window.tf || !window.poseDetection) {
+      if (!globalThis.tf || !globalThis.poseDetection) {
         throw new Error(
           "The local inference libraries did not load. Reload the page",
         );
       }
       try {
-        if (!await window.tf.setBackend("webgl")) {
+        if (!await globalThis.tf.setBackend("webgl")) {
           throw new Error("WebGL unavailable");
         }
       } catch {
-        await window.tf.setBackend("cpu");
+        await globalThis.tf.setBackend("cpu");
       }
-      await window.tf.ready();
-      const loaded = await window.poseDetection.createDetector(
-        window.poseDetection.SupportedModels.MoveNet,
+      await globalThis.tf.ready();
+      const loaded = await globalThis.poseDetection.createDetector(
+        globalThis.poseDetection.SupportedModels.MoveNet,
         {
           modelType:
-            window.poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+            globalThis.poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
           modelUrl: "/assets/model.json",
           enableSmoothing: true,
         },
@@ -113,7 +114,7 @@ async function start() {
     if (session !== generation) return;
     detector.reset();
     $("backend").textContent = `MoveNet Lightning · ${
-      window.tf.getBackend() === "webgl"
+      globalThis.tf.getBackend() === "webgl"
         ? "WebGL acceleration"
         : "CPU processing"
     }`;
@@ -187,4 +188,4 @@ $("stage").classList.add("mirrored");
 $("confidence").addEventListener("input", () => {
   $("confidence-value").value = Number($("confidence").value).toFixed(2);
 });
-window.addEventListener("pagehide", stop);
+globalThis.addEventListener("pagehide", stop);

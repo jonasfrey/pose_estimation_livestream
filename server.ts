@@ -88,7 +88,7 @@ export async function handler(request: Request): Promise<Response> {
 
 if (import.meta.main) {
   try {
-    const port = Number(Deno.env.get("PORT") || 8000);
+    const port = Number(Deno.env.get("PORT") || 8787);
     if (!Number.isInteger(port) || port < 1 || port > 65535) {
       throw new Error("PORT must be between 1 and 65535");
     }
@@ -101,7 +101,7 @@ if (import.meta.main) {
       error instanceof Error ? error.message : error,
     );
     console.error(
-      "Check your internet connection and run deno task run again. Completed downloads are cached.",
+      "Check your connection and PORT setting, then run deno task run again. Completed downloads are cached.",
     );
     Deno.exit(1);
   }
