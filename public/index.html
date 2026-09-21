@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101512">
+    <title>Pose Studio · Live movement</title>
+    <link rel="stylesheet" href="/style.css">
+    <script defer src="/assets/tf.min.js"></script>
+    <script defer src="/assets/pose-detection.min.js"></script>
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header><a class="brand" href="/" aria-label="Pose Studio home"><span class="brand-icon">⌁</span> POSE STUDIO</a><span class="local"><i></i> On-device inference</span></header>
+    <main>
+      <div
+        class="intro"><div><p class="eyebrow">REAL-TIME POSE ESTIMATION</p><h1>Movement, mapped.</h1><p class="subtitle">Turn your camera into a live motion canvas.</p></div><span class="model-tag">MoveNet <b>Lightning</b></span></div>
+      <div class="workspace">
+        <section class="viewer" aria-label="Live camera preview">
+          <div
+            class="viewer-bar"><span><i id="status-dot"></i><span id="status" role="status" aria-live="polite">Camera off</span></span><span>LIVE VIEW <span class="cross">＋</span></span></div>
+          <div class="stage" id="stage">
+          <video id="video" autoplay playsinline muted></video><canvas id="overlay" aria-label="Detected pose overlay"></canvas>
+          <div class="empty" id="empty"><div class="camera-icon">◎</div><h2>A little room to move.</h2><p>Enable your camera to see your pose in real time.<br>Step back so your whole body fits in the frame.</p><button id="start" class="primary">Enable camera <span>↗</span></button><small>Your video stays on this device.</small></div>
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <div class="view-label" id="view-label" hidden>17-POINT BODY TRACKING</div>
+        </div>
+          <div
+            class="viewer-footer"><span id="tracking">Ready when you are</span><button id="stop" disabled>Stop camera <span>■</span></button></div>
+        </section>
+        <aside>
+          <section class="panel">
+            <p class="eyebrow">SESSION</p>
+            <h2>The live signals</h2>
+            <div class="metrics">
+              <div><strong id="fps">—</strong><span>Inference FPS</span></div>
+              <div><strong id="latency">—</strong><span>Latency · ms</span></div>
+            </div>
+            <div
+              class="points"><span>Visible keypoints</span><b><span id="points">0</span> <span class="muted">/ 17</span></b></div>
+            <div class="meter">
+              <div id="meter-fill"></div>
+            </div>
+            <p class="hint"
+              id="backend">Model loads when you enable the camera.</p>
+          </section>
+          <section
+            class="panel controls"><p class="eyebrow">MAKE IT YOURS</p><label class="toggle-row" for="mirror"><span>Mirror camera<small>A familiar, natural view</small></span><input type="checkbox" id="mirror" checked></label><label class="toggle-row" for="skeleton"><span>Show skeleton<small>Connect the keypoints</small></span><input type="checkbox" id="skeleton" checked></label><label class="toggle-row" for="joints"><span>Show keypoints<small>Highlight each joint</small></span><input type="checkbox" id="joints" checked></label><div class="confidence"><label for="confidence">Confidence threshold</label><output id="confidence-value" for="confidence">0.30</output></div><input id="confidence" type="range" min="0.1" max="0.9" step="0.05" value="0.3"><p class="hint">Higher values show only more certain points.</p></section>
+          <section
+            class="note"><span>↗</span><div><b>Small model. Live movement.</b><p>Lightning tracks one person with 17 body keypoints. Good light and a clear full-body view work best.</p></div></section>
+        </aside>
+      </div>
+      <p id="error" role="alert" hidden></p>
+      <footer><span>BUILT FOR MOVEMENT</span><span>Local processing <span class="separator">/</span> No recording <span class="separator">/</span> No uploads</span></footer>
+    </main>
+  </body>
+</html>

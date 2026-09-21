@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "run": "deno run --allow-net --allow-read=public,.cache --allow-write=.cache --allow-env=PORT server.ts",
+    "check": "deno check server.ts && deno lint && deno fmt --check",
+    "test": "deno test --allow-read=public server_test.ts"
+  },
+  "fmt": { "exclude": [".cache"] },
+  "lint": { "exclude": [".cache"] }
+}
